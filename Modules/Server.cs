@@ -20,7 +20,7 @@ namespace SatisfactoryBot.Modules
             internal static string Success = "The server has been successfully {0}.";
             internal static string Error = "The server could not be {0}.";
 
-            internal static string NotFound = "I could not find any process with the ID assigned that was assigned to the server (PowerShell) window.";
+            internal static string NotFound = "I could not find any process with the ID that was assigned to the server (PowerShell) window.";
             internal static string AlreadyRunning = "The server is already running.";
             internal static string NotRunning = "There is no server running";
         }

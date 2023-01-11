@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SatisfactoryBot", "SatisfactoryBot.csproj", "{596F7812-6986-416A-A254-0E9F379B6211}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{596F7812-6986-416A-A254-0E9F379B6211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{596F7812-6986-416A-A254-0E9F379B6211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{596F7812-6986-416A-A254-0E9F379B6211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{596F7812-6986-416A-A254-0E9F379B6211}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {478E52FB-6DB9-46BE-9B28-107F10CBA9AF}
+	EndGlobalSection
+EndGlobal

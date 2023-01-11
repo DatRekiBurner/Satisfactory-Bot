@@ -32,7 +32,9 @@ namespace SatisfactoryBot.Modules
             string type = "started";
             DiscordEmbedBuilder embed;
 
-            if (Id == 0)
+            Process? process = Process.GetProcesses().Where(x => x.Id == Id).FirstOrDefault();
+
+            if (Id == 0 || process == null)
             {
                 await ProcessFunctions.StartServer();
 

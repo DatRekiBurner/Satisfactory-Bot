@@ -35,7 +35,7 @@ namespace SatisfactoryBot.Core
                     Arguments = $"/C ping -t {Dns.GetHostEntry(Dns.GetHostName()).AddressList.Where(x => x.AddressFamily == AddressFamily.InterNetwork).First()}"
 #else
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    Arguments = $"/C .\\FactoryServer.exe -multihome={Credentials.Creds.ServerIp} -log -unattended"
+                    Arguments = $"/C cd {Credentials.CurrentDir} && .\\FactoryServer.exe -multihome={Credentials.Creds.ServerIp} -log -unattended"
 #endif
                 }
             };

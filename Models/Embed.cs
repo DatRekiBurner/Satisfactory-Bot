@@ -9,16 +9,9 @@ namespace SatisfactoryBot.Models
         {
             public DiscordEmbedBuilder Embed { get; set; }
 
-            public Success(InteractionContext ctx, string title)
+            public Success(InteractionContext ctx, string? title = null, string? description = null)
             {
-                Embed = new Standard(ctx, title).Embed;
-                Embed.Color = DiscordColor.Green;
-            }
-
-            public Success(InteractionContext ctx, string title, string description)
-            {
-                Embed = new Standard(ctx, title, description).Embed;
-                Embed.Color = DiscordColor.Green;
+                Embed = new Standard(ctx, DiscordColor.Green, title, description).Embed;
             }
         }
 
@@ -26,16 +19,9 @@ namespace SatisfactoryBot.Models
         {
             public DiscordEmbedBuilder Embed { get; set; }
 
-            public Error(InteractionContext ctx, string title)
+            public Error(InteractionContext ctx, string? title = null, string? description = null)
             {
-                Embed = new Standard(ctx, title).Embed;
-                Embed.Color = DiscordColor.Red;
-            }
-
-            public Error(InteractionContext ctx, string title, string description)
-            {
-                Embed = new Standard(ctx, title, description).Embed;
-                Embed.Color = DiscordColor.Red;
+                Embed = new Standard(ctx, DiscordColor.Red, title, description).Embed;
             }
         }
 
@@ -43,33 +29,27 @@ namespace SatisfactoryBot.Models
         {
             public DiscordEmbedBuilder Embed { get; set; }
 
-            public Standard(InteractionContext ctx, string title)
+            public Standard(InteractionContext ctx, DiscordColor? color = null, string? title = null, string? description = null)
             {
                 Embed = new()
                 {
-                    Title = title,
                     Footer = new()
                     {
                         Text = $"Executed by {ctx.User.Username}#{ctx.User.Discriminator}",
                         IconUrl = ctx.User.AvatarUrl
                     },
-                    Color = DiscordColor.DarkButNotBlack
                 };
-            }
 
-            public Standard(InteractionContext ctx, string title, string description)
-            {
-                Embed = new()
-                {
-                    Title = title,
-                    Footer = new()
-                    {
-                        Text = $"Executed by {ctx.User.Username}#{ctx.User.Discriminator}",
-                        IconUrl = ctx.User.AvatarUrl
-                    },
-                    Color = DiscordColor.DarkButNotBlack,
-                    Description = description
-                };
+                if (color == null)
+                    Embed.Color = DiscordColor.DarkButNotBlack;
+                else
+                    Embed.Color = (DiscordColor)color;
+
+                if (!string.IsNullOrWhiteSpace(title))
+                    Embed.Title = title;
+
+                if (!string.IsNullOrWhiteSpace(description))
+                    Embed.Description = description;
             }
         }
     }

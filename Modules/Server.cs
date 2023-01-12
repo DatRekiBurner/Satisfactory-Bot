@@ -2,6 +2,7 @@
 using DSharpPlus.SlashCommands;
 using DSharpPlus.SlashCommands.Attributes;
 using SatisfactoryBot.Core;
+using SatisfactoryBot.Core.Extensions;
 using SatisfactoryBot.Core.Extensions.Attributes;
 using SatisfactoryBot.Core.Services.Discord;
 using SatisfactoryBot.Models;
@@ -13,7 +14,7 @@ namespace SatisfactoryBot.Modules
     [SpecificGuildOnly]
     internal class Server : ApplicationCommandModule
     {
-        internal static int Id { get; set; }
+        internal static ServerInfoModel ServerInfo { get; set; } = new();
 
         internal class Messages
         {
@@ -32,13 +33,13 @@ namespace SatisfactoryBot.Modules
             string type = "started";
             DiscordEmbedBuilder embed;
 
-            Process? process = Process.GetProcesses().Where(x => x.Id == Id).FirstOrDefault();
+            Process? process = ServerInfo.Id.GetProcess();
 
-            if (Id == 0 || process == null)
+            if (ServerInfo.Id == 0 || process == null)
             {
                 await ProcessFunctions.StartServer();
 
-                if (Id == 0)
+                if (ServerInfo.Id == 0)
                     embed = new Embed.Error(ctx, title, string.Format(Messages.Error, type)).Embed;
                 else
                     embed = new Embed.Success(ctx, title, string.Format(Messages.Success, type)).Embed;
@@ -56,11 +57,11 @@ namespace SatisfactoryBot.Modules
             string type = "stopped";
             DiscordEmbedBuilder embed;
 
-            if (Id == 0)
+            if (ServerInfo.Id == 0)
                 embed = new Embed.Error(ctx, title, Messages.NotRunning).Embed;
             else
             {
-                Process? process = Process.GetProcesses().Where(x => x.Id == Id).FirstOrDefault();
+                Process? process = ServerInfo.Id.GetProcess();
 
                 if (process == null)
                     embed = new Embed.Error(ctx, title, Messages.NotFound).Embed;
@@ -81,11 +82,11 @@ namespace SatisfactoryBot.Modules
             string type = "restarted";
             DiscordEmbedBuilder embed;
 
-            if (Id == 0)
+            if (ServerInfo.Id == 0)
                 embed = new Embed.Error(ctx, title, Messages.NotRunning).Embed;
             else
             {
-                Process? process = Process.GetProcesses().Where(x => x.Id == Id).FirstOrDefault();
+                Process? process = ServerInfo.Id.GetProcess();
 
                 if (process == null)
                     embed = new Embed.Error(ctx, title, Messages.NotFound).Embed;
@@ -94,11 +95,32 @@ namespace SatisfactoryBot.Modules
                     await ProcessFunctions.StopServer(process);
                     await ProcessFunctions.StartServer();
 
-                    if (Id == 0)
+                    if (ServerInfo.Id == 0)
                         embed = new Embed.Error(ctx, title, $"{string.Format(Messages.Success, "stopped")} But it could not be restarted.").Embed;
                     else
                         embed = new Embed.Success(ctx, title, string.Format(Messages.Success, type)).Embed;
                 }
+            }
+
+            await Response.SendEmbed(ctx, embed);
+        }
+
+        [SlashCommand("Status", "The status of the Satisfactory server")]
+        public static async Task Status(InteractionContext ctx)
+        {
+            DiscordEmbedBuilder embed;
+            Process? process = ServerInfo.Id.GetProcess();
+
+            if (ServerInfo.Id == 0 || process == null)
+                embed = new Embed.Error(ctx, nameof(Status), Messages.NotRunning).Embed;
+            else
+            {
+                TimeSpan difference = DateTime.UtcNow.Subtract(ServerInfo.StartTime);
+
+                embed = new Embed.Success(ctx).Embed;
+                embed.AddField("Status", ServerInfo.Status.ToString());
+                embed.AddField("ID", process.Id.ToString());
+                embed.AddField("Running for", string.Format("{0} hour(s), {1} minute(s), {2} second(s)", difference.Hours, difference.Minutes, difference.Seconds));
             }
 
             await Response.SendEmbed(ctx, embed);

@@ -40,12 +40,17 @@ namespace SatisfactoryBot
 
             foreach (ApplicationCommandModule module in SlashCommandModules)
             {
-
-                slashCommand.RegisterCommands(module.GetType());
 #if (DEBUG)
-                //slashCommand.RegisterCommands(module.GetType(), 137255915337285632);
+                try
+                {
+                    slashCommand.RegisterCommands(module.GetType(), Credentials.Creds.GuildId);
+                }
+                catch
+                {
+                    slashCommand.RegisterCommands(module.GetType());
+                }
 #else
-                //slashCommand.RegisterCommands(module.GetType());
+                slashCommand.RegisterCommands(module.GetType());
 #endif
             }
             #endregion
